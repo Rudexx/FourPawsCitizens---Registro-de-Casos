@@ -29,6 +29,7 @@ public class Tratamiento implements Runnable {
                 var newMessage = message.toUpperCase();
                 safePrintln("The message to be returned is: " + newMessage);
                 out.println(newMessage);
+                safePrintln("Hola estoy aca");
             }
 
         } catch (Exception e) {

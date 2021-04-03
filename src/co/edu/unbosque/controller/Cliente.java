@@ -11,11 +11,12 @@ public class Cliente {
         try (var socket = new Socket("127.0.0.1", 59897)) {
 
             System.out.println("Conectado a: " + socket);
-            System.out.println("Ingrese el mensaje a ser tratado:");
-
+            System.out.println("Bienvenido a Ciudadanos de 4 Patas");
+            System.out.println("Por favor escriba la operacion a realizar: \n" + "1) Crear caso" + "\n2) Hablar con un Agente");
             var scanner = new Scanner(System.in);
             var in = new Scanner(socket.getInputStream());
             var out = new PrintWriter(socket.getOutputStream(), true);
+
 
             while (scanner.hasNextLine()) {
                 out.println(scanner.nextLine());
