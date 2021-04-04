@@ -5,10 +5,10 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Cliente {
+public class Cliente2 {
     static ArrayList<Caso> casos = new ArrayList();
     public static void main(String[] args) throws Exception {
-            try (var socket = new Socket("25.119.209.58", 59897)) {
+            try (var socket = new Socket("127.0.0.1", 59897)) {
 
                 System.out.println("Connected: " + socket);
                 var in = new Scanner(socket.getInputStream());
