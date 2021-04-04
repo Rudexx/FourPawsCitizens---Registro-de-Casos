@@ -27,7 +27,7 @@ public class Cliente {
                 var scanner = new Scanner(System.in);
                 System.out.println("1.-Crear Caso\n" + 
                 		"2.-Hablar con agente\n" + 
-                		"3. Ver casos creados" +
+                		"3. Ver casos creados\n" +
                 		"4.-Salir"
                      );
                 var seleccion = scanner.nextLine();
