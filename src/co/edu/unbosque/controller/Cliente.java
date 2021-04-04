@@ -8,8 +8,6 @@ import java.util.Scanner;
 public class Cliente {
 
     public static void main(String[] args) throws Exception {
-
-        try (var socket = new Socket("127.0.0.1", 59897)) {
             ArrayList<Caso> casos = new ArrayList();
             try (var socket = new Socket("127.0.0.1", 59897)) {
 
@@ -63,5 +61,4 @@ public class Cliente {
 
         }
 
-    }
 }
