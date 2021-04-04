@@ -95,4 +95,12 @@ public class Caso {
     public void setComentarios(String comentarios) {
         Comentarios = comentarios;
     }
+
+	@Override
+	public String toString() {
+		return "Caso [Motivo=" + Motivo + ", Especie=" + Especie + ", Tamano=" + Tamano + ", Localidad=" + Localidad
+				+ ", Direccion=" + Direccion + ", NombrePersona=" + NombrePersona + ", Telefono=" + Telefono
+				+ ", Email=" + Email + ", Comentarios=" + Comentarios + "]";
+	}
+    
 }
