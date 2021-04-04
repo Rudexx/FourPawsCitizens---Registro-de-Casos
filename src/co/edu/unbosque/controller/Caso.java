@@ -4,7 +4,7 @@ public class Caso {
 
     private String Motivo;
     private String Especie;
-    private String Tamaño;
+    private String Tamano;
     private String Localidad;
     private String Direccion;
     private String NombrePersona;
@@ -15,7 +15,7 @@ public class Caso {
     public Caso(String motivo){
         Motivo = motivo;
         Especie = "";
-        Tamaño= "";
+        Tamano= "";
         Localidad= "";
         Direccion="";
         NombrePersona="";
@@ -40,12 +40,12 @@ public class Caso {
         Especie = especie;
     }
 
-    public String getTamaño() {
-        return Tamaño;
+    public String getTamano() {
+        return Tamano;
     }
 
-    public void setTamaño(String tamaño) {
-        Tamaño = tamaño;
+    public void setTamano(String tamano) {
+        Tamano = tamano;
     }
 
     public String getLocalidad() {
