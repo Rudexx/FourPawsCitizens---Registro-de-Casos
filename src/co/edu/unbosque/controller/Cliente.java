@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class Cliente {
     static ArrayList<Caso> casos = new ArrayList();
     public static void main(String[] args) throws Exception {
-            try (var socket = new Socket("127.0.0.1", 59897)) {
+            try (var socket = new Socket("25.119.209.58", 59897)) {
 
                 System.out.println("Connected: " + socket);
                 var in = new Scanner(socket.getInputStream());
@@ -18,10 +18,10 @@ public class Cliente {
             }
             
                 public static void funcionar(Scanner in, PrintWriter out){
-
+                	
                 var sc = in;
                 var prin = out;
-               
+                
                 
                 System.out.println("Bienvenidos a animales de 4 patas");
                 var scanner = new Scanner(System.in);
@@ -31,18 +31,16 @@ public class Cliente {
                 		"4.-Salir"
                      );
                 var seleccion = scanner.nextLine();
-                out.println(seleccion);
-
-                System.out.println("Esto lei" + seleccion);
                 if(seleccion.equals("1")) {
-                    System.out.println("  -------Creacion del caso--------\n" +
-                            "Ingrese si fue\n" +
-                            "1.- Robo\n" +
-                            "2.- perdida\n" +
-                            "3.- Abandono\n" +
-                            "4.- Animal Peligroso\n" +
-                            "5.- Manejo indebido"
-                    );
+                if (seleccion.equals("1")) {
+                    System.out.println("  -------Creacion del caso--------\n" + 
+                    		"Ingrese si fue\n" + 
+                    		"1.- Robo\n" + 
+                    		"2.- perdida\n" + 
+                    		"3.- Abandono\n" + 
+                    		"4.- Animal Peligroso\n" + 
+                    		"5.- Manejo indebido"
+                          );
                     System.out.println("Introduzca La opcion que desea hacer: ");
                     seleccion = scanner.nextLine();
                     Caso c = new Caso(seleccion);
@@ -74,13 +72,15 @@ public class Cliente {
                     System.out.println("El caso se ha creado con exito");
                     System.out.println("¿Desea realizar otra operacion?" + "\nSi" + "\nNo");
                     seleccion = scanner.nextLine();
-                    if (seleccion.equalsIgnoreCase("Si")) {
-                        funcionar(sc, prin);
-                    } else if (seleccion.equalsIgnoreCase("No")) {
-
-                    } else {
-
+                    if(seleccion.equalsIgnoreCase("Si")) {
+                    	funcionar(sc, prin);
                     }
+                } else if (seleccion.equalsIgnoreCase("No")) {
+
+                } else {
+
+                }
+               
                 }else if(seleccion.equalsIgnoreCase("2")) {
                 	
                 }else if(seleccion.equalsIgnoreCase("3")) {
@@ -92,17 +92,13 @@ public class Cliente {
                 }else {
                 	System.out.println("No se ha creado ningún caso aún");
                 }
-                }else if(seleccion.equals("4")){
-                    System.out.println("Adios");
-                    System.exit(0);
-                }
-                    else {
-                	System.out.println("Accion no reconocida");
+                }else {
+                	
                 }
                 
                 while (scanner.hasNextLine()) {
                     out.println(scanner.nextLine());
-                    System.out.println("Soporte: " + sc.nextLine());
+                    System.out.println("Transformed message: " + in.nextLine());
                 }
 
             }

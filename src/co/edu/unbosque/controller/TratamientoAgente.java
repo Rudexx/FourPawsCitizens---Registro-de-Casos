@@ -5,11 +5,11 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class Tratamiento implements Runnable {
+public class TratamientoAgente implements Runnable {
 
     private Socket socket;
 
-    public Tratamiento(Socket socket) {
+    public TratamientoAgente(Socket socket) {
         this.socket = socket;
     }
 
@@ -25,7 +25,7 @@ public class Tratamiento implements Runnable {
 
             while (in.hasNextLine()) {
                 var message = in.nextLine();
-                safePrintln("The message received is: " + message);
+                safePrintln("El mensaje recibido es: " + message);
                 var newMessage = message.toUpperCase();
                 safePrintln("The message to be returned is: " + newMessage);
                 out.println(newMessage);
