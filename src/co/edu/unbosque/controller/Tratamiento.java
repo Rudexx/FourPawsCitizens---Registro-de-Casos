@@ -25,7 +25,7 @@ public class Tratamiento implements Runnable {
 
             while (in.hasNextLine()) {
                 var message = in.nextLine();
-                safePrintln("The message received is: " + message);
+                safePrintln("El mensaje recibido es: " + message);
                 var newMessage = message.toUpperCase();
                 safePrintln("The message to be returned is: " + newMessage);
                 out.println(newMessage);
