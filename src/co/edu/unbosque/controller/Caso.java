@@ -98,9 +98,9 @@ public class Caso {
 
 	@Override
 	public String toString() {
-		return "Caso [Motivo=" + Motivo + ", Especie=" + Especie + ", Tamano=" + Tamano + ", Localidad=" + Localidad
-				+ ", Direccion=" + Direccion + ", NombrePersona=" + NombrePersona + ", Telefono=" + Telefono
-				+ ", Email=" + Email + ", Comentarios=" + Comentarios + "]";
+		return  "\nMotivo=" + Motivo + "\nEspecie=" + Especie + "\nTamano=" + Tamano + "\nLocalidad=" + Localidad
+				+ "\nDireccion=" + Direccion + "\nNombrePersona=" + NombrePersona + "\nTelefono=" + Telefono
+				+ "\nEmail=" + Email + "\nComentarios=" + Comentarios;
 	}
     
 }

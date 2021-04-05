@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class Cliente {
     static ArrayList<Caso> casos = new ArrayList();
     public static void main(String[] args) throws Exception {
-            try (var socket = new Socket("25.119.209.58", 59897)) {
+            try (var socket = new Socket("127.0.0.1", 59897)) {
 
                 System.out.println("Connected: " + socket);
                 var in = new Scanner(socket.getInputStream());
@@ -31,7 +31,6 @@ public class Cliente {
                 		"4.-Salir"
                      );
                 var seleccion = scanner.nextLine();
-                if(seleccion.equals("1")) {
                 if (seleccion.equals("1")) {
                     System.out.println("  -------Creacion del caso--------\n" + 
                     		"Ingrese si fue\n" + 
@@ -70,37 +69,38 @@ public class Cliente {
                     c.setComentarios(item);
                     casos.add(c);
                     System.out.println("El caso se ha creado con exito");
-                    System.out.println("¿Desea realizar otra operacion?" + "\nSi" + "\nNo");
+                    System.out.println("¿Desea realizar otra operacion?" + "\n1.-Si" + "\n2.-No");
                     seleccion = scanner.nextLine();
-                    if(seleccion.equalsIgnoreCase("Si")) {
+                    if(seleccion.equalsIgnoreCase("1")) {
                     	funcionar(sc, prin);
-                    }
-                } else if (seleccion.equalsIgnoreCase("No")) {
-
+                    } else if (seleccion.equalsIgnoreCase("2")) {
+                        System.exit(0);
                 } else {
-
-                }
+                    System.out.println("Seleccion no reconocida, se le enviara al menu");
+                        funcionar(sc, prin);
+                    }
                
                 }else if(seleccion.equalsIgnoreCase("2")) {
-                	
+                	System.out.println("Esta funcion aun no esta habilitada" +
+                            "\nPorfavor denos mas tiempo y tal vez este habilitada");
+                	funcionar(in,out);
                 }else if(seleccion.equalsIgnoreCase("3")) {
                 	
                 if(casos.size() != 0) {	
                 	for (int i = 0; i < casos.size(); i++) {
-						System.out.println(casos.get(i).toString());
+						System.out.println("Caso Numero:"+ i + casos.get(i).toString());
 					}
                 }else {
-                	System.out.println("No se ha creado ningún caso aún");
+                	System.out.println("No se ha creado ningun caso aun");
                 }
-                }else {
-                	
-                }
-                
-                while (scanner.hasNextLine()) {
-                    out.println(scanner.nextLine());
-                    System.out.println("Transformed message: " + in.nextLine());
+                    funcionar(sc, prin);
+                }else if(seleccion.equalsIgnoreCase("4")){
+                	System.out.println("Por favor vuelva pronto (y no nos repruebe :c)");
+                	System.exit(0);
+                }else{
+                 System.out.println("Seleccion no reconocida");
+                 funcionar(sc, prin);
                 }
 
             }
-
         }
