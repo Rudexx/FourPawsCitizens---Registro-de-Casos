@@ -27,12 +27,12 @@ import javax.swing.JTextField;
  * When the server sends a line beginning with "MESSAGE" then all characters
  * following this string should be displayed in its message area.
  */
- public class ChatClient {
+ public class Agente {
 
     String serverAddress;
     Scanner in;
     PrintWriter out;
-    JFrame frame = new JFrame("Chatter");
+    JFrame frame = new JFrame("Chat");
     JTextField textField = new JTextField(50);
     JTextArea messageArea = new JTextArea(16, 50);
 
@@ -43,7 +43,7 @@ import javax.swing.JTextField;
      * editable, and only becomes editable AFTER the client receives the
      * NAMEACCEPTED message from the server.
      */
-    public ChatClient(String serverAddress) {
+    public Agente(String serverAddress) {
         this.serverAddress = serverAddress;
 
         textField.setEditable(false);
@@ -62,8 +62,7 @@ import javax.swing.JTextField;
     }
 
     private String getName() {
-        return JOptionPane.showInputDialog(frame, "Choose a screen name:", "Screen name selection",
-                JOptionPane.PLAIN_MESSAGE);
+        return "Agente";
     }
 
     private void run() throws IOException {
@@ -77,9 +76,31 @@ import javax.swing.JTextField;
                 if (line.startsWith("SUBMITNAME")) {
                     out.println(getName());
                 } else if (line.startsWith("NAMEACCEPTED")) {
-                    this.frame.setTitle("Chatter - " + line.substring(13));
-                    textField.setEditable(true);
+                	 textField.setEditable(true);
+                	 messageArea.append("Bienvenidos a animales de 4 patas, Elija una opcion a continuación:");
+                	messageArea.append("1.-Crear Caso\n" + 
+                		"2.-Hablar con agente\n" + 
+                		"3. Ver casos creados\n" +
+                		"4.-Salir");
+                	
+
+                   
                 } else if (line.startsWith("MESSAGE")) {
+                	
+                	if(line.contains("1")) {
+                		
+                		this.frame.setTitle("Chat - " + line.substring(13));
+                		messageArea.setText("");
+                		
+                		
+                	}else if(line.contains("2")) {
+                		
+                	}else if(line.contains("3")) {
+                		
+                	}else if(line.contains("4")) {
+                		
+                	}
+                	
                     messageArea.append(line.substring(8) + "\n");
                 }
             }
@@ -97,7 +118,7 @@ import javax.swing.JTextField;
         }*/
 
         
-        var client = new ChatClient("25.119.209.58");
+        var client = new Agente("25.119.209.58");
         client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         client.frame.setVisible(true);
         client.run();

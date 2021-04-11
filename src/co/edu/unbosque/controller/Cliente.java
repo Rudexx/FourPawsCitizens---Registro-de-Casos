@@ -33,7 +33,6 @@ public class Cliente {
                 var seleccion = scanner.nextLine();
                 out.println(seleccion);
 
-                System.out.println("Esto lei" + seleccion);
                 if(seleccion.equals("1")) {
                     System.out.println("  -------Creacion del caso--------\n" +
                             "Ingrese si fue\n" +
