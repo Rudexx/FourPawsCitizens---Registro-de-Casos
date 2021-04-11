@@ -1,110 +1,157 @@
 package co.edu.unbosque.controller;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Cliente {
-    static ArrayList<Caso> casos = new ArrayList();
-    public static void main(String[] args) throws Exception {
-            try (var socket = new Socket("127.0.0.1", 59897)) {
+    String serverAddress;
+    Scanner in;
+    PrintWriter out;
+    JFrame frame = new JFrame("Chat");
+    JTextField textField = new JTextField(50);
+    JTextArea messageArea = new JTextArea(16, 50);
 
-                System.out.println("Connected: " + socket);
-                var in = new Scanner(socket.getInputStream());
-                var out = new PrintWriter(socket.getOutputStream(), true);
-                funcionar(in, out);
+    /**
+     * Constructs the client by laying out the GUI and registering a listener with
+     * the textfield so that pressing Return in the listener sends the textfield
+     * contents to the server. Note however that the textfield is initially NOT
+     * editable, and only becomes editable AFTER the client receives the
+     * NAMEACCEPTED message from the server.
+     */
+    public Cliente(String serverAddress) {
+        this.serverAddress = serverAddress;
+
+        textField.setEditable(false);
+        messageArea.setEditable(false);
+        frame.getContentPane().add(textField, BorderLayout.SOUTH);
+        frame.getContentPane().add(new JScrollPane(messageArea), BorderLayout.CENTER);
+        frame.pack();
+
+        // Send on enter then clear to prepare for next message
+        textField.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                out.println(textField.getText());
+                textField.setText("");
             }
-            }
-            
-                public static void funcionar(Scanner in, PrintWriter out){
+        });
+    }
 
-                var sc = in;
-                var prin = out;
-               
-                
-                System.out.println("Bienvenidos a animales de 4 patas");
-                var scanner = new Scanner(System.in);
-                System.out.println("1.-Crear Caso\n" + 
-                		"2.-Hablar con agente\n" + 
-                		"3. Ver casos creados\n" +
-                		"4.-Salir"
-                     );
-                var seleccion = scanner.nextLine();
-                out.println(seleccion);
+    private String getName() {
+        return JOptionPane.showInputDialog(frame, "Escribe tu nombre:", "Seleccion De Nombre",
+                JOptionPane.PLAIN_MESSAGE);
+    }
 
-                System.out.println("Esto lei" + seleccion);
-                if(seleccion.equals("1")) {
-                    System.out.println("  -------Creacion del caso--------\n" +
-                            "Ingrese si fue\n" +
-                            "1.- Robo\n" +
-                            "2.- perdida\n" +
-                            "3.- Abandono\n" +
-                            "4.- Animal Peligroso\n" +
-                            "5.- Manejo indebido"
-                    );
-                    System.out.println("Introduzca La opcion que desea hacer: ");
-                    seleccion = scanner.nextLine();
-                    Caso c = new Caso(seleccion);
-                    System.out.println("Escriba la especie de la mascota");
-                    String item = scanner.nextLine();
-                    c.setEspecie(item);
-                    System.out.println("Escriba el tamaño de la mascota");
-                    item = scanner.nextLine();
-                    c.setTamano(item);
-                    System.out.println("Escribe la localidad de la mascota");
-                    item = scanner.nextLine();
-                    c.setLocalidad(item);
-                    System.out.println("Escribe la direccion de la mascota");
-                    item = scanner.nextLine();
-                    c.setDireccion(item);
-                    System.out.println("Escriba Su Nombre");
-                    item = scanner.nextLine();
-                    c.setNombrePersona(item);
-                    System.out.println("Escriba Su Telefono");
-                    item = scanner.nextLine();
-                    c.setTelefono(item);
-                    System.out.println("Escriba su Email");
-                    item = scanner.nextLine();
-                    c.setEmail(item);
-                    System.out.println("Comentarios Generales");
-                    item = scanner.nextLine();
-                    c.setComentarios(item);
-                    casos.add(c);
-                    System.out.println("El caso se ha creado con exito");
-                    System.out.println("¿Desea realizar otra operacion?" + "\nSi" + "\nNo");
-                    seleccion = scanner.nextLine();
-                    if (seleccion.equalsIgnoreCase("Si")) {
-                        funcionar(sc, prin);
-                    } else if (seleccion.equalsIgnoreCase("No")) {
+    private void run() throws IOException {
+        try {
+            var socket = new Socket(serverAddress, 59001);
+            in = new Scanner(socket.getInputStream());
+            out = new PrintWriter(socket.getOutputStream(), true);
 
-                    } else {
-
-                    }
-                }else if(seleccion.equalsIgnoreCase("2")) {
-                	
-                }else if(seleccion.equalsIgnoreCase("3")) {
-                	
-                if(casos.size() != 0) {	
-                	for (int i = 0; i < casos.size(); i++) {
-						System.out.println(casos.get(i).toString());
-					}
-                }else {
-                	System.out.println("No se ha creado ningún caso aún");
+            while (in.hasNextLine()) {
+                var line = in.nextLine();
+                if (line.startsWith("SUBMITNAME")) {
+                    out.println(getName());
+                } else if (line.startsWith("NAMEACCEPTED")) {
+                    this.frame.setTitle("Chatter - " + line.substring(13));
+                    textField.setEditable(true);
+                } else if (line.startsWith("MESSAGE")) {
+                    messageArea.append(line.substring(8) + "\n");
                 }
-                }else if(seleccion.equals("4")){
+            }
+        } finally {
+            frame.setVisible(false);
+            frame.dispose();
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        ArrayList<Caso> casos = new ArrayList();
+        boolean ejecutar = true;
+        while (ejecutar == true){
+            System.out.println("Bienvenidos a animales de 4 patas");
+            var scanner = new Scanner(System.in);
+            System.out.println("1.-Crear Caso\n" +
+                    "2.-Hablar con agente\n" +
+                    "3. Ver casos creados\n" +
+                    "4.-Salir"
+            );
+            var seleccion = scanner.nextLine();
+            if (seleccion.equals("1")) {
+                System.out.println("  -------Creacion del caso--------\n" +
+                        "Ingrese si fue\n" +
+                        "1.- Robo\n" +
+                        "2.- perdida\n" +
+                        "3.- Abandono\n" +
+                        "4.- Animal Peligroso\n" +
+                        "5.- Manejo indebido"
+                );
+                System.out.println("Introduzca La opcion que desea hacer: ");
+                seleccion = scanner.nextLine();
+                Caso c = new Caso(seleccion);
+                System.out.println("Escriba la especie de la mascota");
+                String item = scanner.nextLine();
+                c.setEspecie(item);
+                System.out.println("Escriba el tamaño de la mascota");
+                item = scanner.nextLine();
+                c.setTamano(item);
+                System.out.println("Escribe la localidad de la mascota");
+                item = scanner.nextLine();
+                c.setLocalidad(item);
+                System.out.println("Escribe la direccion de la mascota");
+                item = scanner.nextLine();
+                c.setDireccion(item);
+                System.out.println("Escriba Su Nombre");
+                item = scanner.nextLine();
+                c.setNombrePersona(item);
+                System.out.println("Escriba Su Telefono");
+                item = scanner.nextLine();
+                c.setTelefono(item);
+                System.out.println("Escriba su Email");
+                item = scanner.nextLine();
+                c.setEmail(item);
+                System.out.println("Comentarios Generales");
+                item = scanner.nextLine();
+                c.setComentarios(item);
+                casos.add(c);
+                System.out.println("El caso se ha creado con exito");
+                System.out.println("¿Desea realizar otra operacion?" + "\nSi" + "\nNo");
+                seleccion = scanner.nextLine();
+                if (seleccion.equalsIgnoreCase("Si")) {
+                    ejecutar = true;
+                } else if (seleccion.equalsIgnoreCase("No")) {
+                    System.exit(0);
+                } else {
+                    System.out.println("Accion No reconocida");
                     System.out.println("Adios");
                     System.exit(0);
                 }
-                    else {
-                	System.out.println("Accion no reconocida");
+            } else if (seleccion.equalsIgnoreCase("2")) {
+                ejecutar = false;
+            } else if (seleccion.equalsIgnoreCase("3")) {
+                if (casos.size() != 0) {
+                    for (int i = 0; i < casos.size(); i++) {
+                        System.out.println(casos.get(i).toString());
+                    }
+                } else {
+                    System.out.println("No se ha creado ningún caso aún");
                 }
-                
-                while (scanner.hasNextLine()) {
-                    out.println(scanner.nextLine());
-                    System.out.println("Soporte: " + sc.nextLine());
-                }
-
+            } else if (seleccion.equals("4")) {
+                System.out.println("Adios");
+                System.exit(0);
+            } else {
+                System.out.println("Accion no reconocida");
             }
-
         }
+        var cliente = new Cliente("127.0.0.1");
+        cliente.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        cliente.frame.setVisible(true);
+        cliente.run();
+    }
+}
