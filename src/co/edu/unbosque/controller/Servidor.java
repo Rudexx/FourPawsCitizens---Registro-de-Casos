@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.concurrent.Executors;
 
 public class Servidor {
+    public static Boolean Soporteactivo = false;
     private static Set<String> names = new HashSet<>();
 
     // The set of all the print writers for all the clients, used for broadcast.
@@ -20,9 +21,18 @@ public class Servidor {
         var pool = Executors.newFixedThreadPool(500);
         try (var listener = new ServerSocket(59001)) {
             while (true) {
-                pool.execute(new Handler(listener.accept()));
+                String ip = listener.accept().getLocalAddress().toString();
+                if(ip.equals("/127.0.0.2")){
+                    pool.execute(new Handler(listener.accept()));
+                    Soporteactivo = true;
+                }else if(Soporteactivo==true){
+                    pool.execute(new Handler(listener.accept()));
+                }else{
+                    System.out.println("ip No reconocida");
+                }
             }
         }
+
     }
 
     /**
@@ -41,6 +51,7 @@ public class Servidor {
          */
         public Handler(Socket socket) {
             this.socket = socket;
+
         }
 
         /**
@@ -49,6 +60,7 @@ public class Servidor {
          * output stream for the client in a global set, then repeatedly gets inputs and
          * broadcasts them.
          */
+
         public void run() {
             try {
                 in = new Scanner(socket.getInputStream());
