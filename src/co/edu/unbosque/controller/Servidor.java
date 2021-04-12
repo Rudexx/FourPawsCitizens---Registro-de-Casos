@@ -11,6 +11,7 @@ import java.util.concurrent.Executors;
 
 public class Servidor {
     private static Set<String> names = new HashSet<>();
+    
 
     // The set of all the print writers for all the clients, used for broadcast.
     private static Set<PrintWriter> writers = new HashSet<>();
@@ -33,6 +34,7 @@ public class Servidor {
         private Socket socket;
         private Scanner in;
         private PrintWriter out;
+        private boolean agente = false;
 
         /**
          * Constructs a handler thread, squirreling away the socket. All the interesting
@@ -53,7 +55,23 @@ public class Servidor {
             try {
                 in = new Scanner(socket.getInputStream());
                 out = new PrintWriter(socket.getOutputStream(), true);
+                
+                var ip = socket.getLocalAddress();
 
+                
+                
+                for (PrintWriter writer : writers) {
+                	  for (String na: names) {
+      					if(na.equals("Soporte")) {
+      						agente = true;
+      						writer.println("hola");
+      					}
+      				}         
+                    
+                }
+                
+              
+                if(names.contains("Soporte") || ip.toString().equals("/127.0.0.2")) {
                 // Keep requesting a name until we get a unique one.
                 while (true) {
                     out.println("SUBMITNAME");
@@ -86,7 +104,13 @@ public class Servidor {
                     }
                     for (PrintWriter writer : writers) {
                         writer.println("MESSAGE " + name + ": " + input);
+                      
+                        writer.println(agente);
                     }
+                    
+                    
+                  
+                }
                 }
             } catch (Exception e) {
                 System.out.println(e);
@@ -108,4 +132,34 @@ public class Servidor {
             }
         }
     }
+
+	/**
+	 * @return the names
+	 */
+	public static Set<String> getNames() {
+		return names;
+	}
+
+	/**
+	 * @param names the names to set
+	 */
+	public static void setNames(Set<String> names) {
+		Servidor.names = names;
+	}
+
+	/**
+	 * @return the writers
+	 */
+	public static Set<PrintWriter> getWriters() {
+		return writers;
+	}
+
+	/**
+	 * @param writers the writers to set
+	 */
+	public static void setWriters(Set<PrintWriter> writers) {
+		Servidor.writers = writers;
+	}
+    
+    
 }

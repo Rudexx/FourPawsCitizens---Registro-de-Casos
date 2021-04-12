@@ -51,7 +51,7 @@ public class ChatSoporte {
             var socket = new Socket(serverAddress, 59001);
             in = new Scanner(socket.getInputStream());
             out = new PrintWriter(socket.getOutputStream(), true);
-
+            
             while (in.hasNextLine()) {
                 var line = in.nextLine();
                 if (line.startsWith("SUBMITNAME")) {
@@ -70,7 +70,7 @@ public class ChatSoporte {
     }
 
     public static void main(String[] args) throws Exception {
-        var client = new ChatSoporte("127.0.0.1");
+        var client = new ChatSoporte("127.0.0.2");
         client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         client.frame.setVisible(true);
         client.run();
