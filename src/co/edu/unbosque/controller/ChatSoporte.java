@@ -18,12 +18,12 @@ public class ChatSoporte {
     JTextArea messageArea = new JTextArea(16, 50);
 
     /**
-     * Constructs the client by laying out the GUI and registering a listener with
-     * the textfield so that pressing Return in the listener sends the textfield
-     * contents to the server. Note however that the textfield is initially NOT
-     * editable, and only becomes editable AFTER the client receives the
-     * NAMEACCEPTED message from the server.
-     */
+	 * 
+	 * Metodo Constructor de la clase. Asigna la locacion del server en el que se encuentra el socket
+	 * @param serverAddress: direccion ip del servidor
+	 * 
+	 */
+    
     public ChatSoporte(String serverAddress) {
         this.serverAddress = serverAddress;
 
@@ -41,10 +41,24 @@ public class ChatSoporte {
             }
         });
     }
+    
+    /**
+   	 * 
+   	 * retorna el nombre del agente que se conecta
+   	 * @return un String con el nombre del agente de soporte
+   	 * 
+   	 */
 
     private String getName() {
         return "Soporte";
     }
+    
+    /**
+   	 * 
+   	 * comienza el hilo de ejecucion del socket
+   	 * @throws IOException: una excepción si ocurre algun error al ejecutar el socket
+   	 * 
+   	 */
 
     private void run() throws IOException {
         try {
@@ -69,6 +83,14 @@ public class ChatSoporte {
         }
     }
 
+    /**
+   	 * 
+   	 * Metodo main de la clase. Ejecuta la clase
+   	 * @throws IOException: una excepción si ocurre algun error al ejecutar el socket
+   	 * @param args: parametro del sistema operativo
+   	 * 
+   	 */
+    
     public static void main(String[] args) throws Exception {
         var client = new ChatSoporte("127.0.0.2");
         client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

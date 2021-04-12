@@ -20,14 +20,13 @@ public class Cliente {
     Servidor server;
     String linea = "";
     
-
     /**
-     * Constructs the client by laying out the GUI and registering a listener with
-     * the textfield so that pressing Return in the listener sends the textfield
-     * contents to the server. Note however that the textfield is initially NOT
-     * editable, and only becomes editable AFTER the client receives the
-     * NAMEACCEPTED message from the server.
-     */
+  	 * 
+  	 * Metodo Constructor de la clase. Asigna la locacion del server en el que se encuentra el socket
+  	 * @param serverAddress: direccion ip del servidor
+  	 * 
+  	 */
+
     public Cliente(String serverAddress) {
     	frame = new JFrame();
         this.serverAddress = serverAddress;
@@ -38,7 +37,7 @@ public class Cliente {
         frame.getContentPane().add(new JScrollPane(messageArea), BorderLayout.CENTER);
         frame.pack();
 
-        // Send on enter then clear to prepare for next message
+
         textField.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 out.println(textField.getText());
@@ -46,10 +45,24 @@ public class Cliente {
             }
         });
     }
+    /**
+   	 * 
+   	 * retorna el nombre del cliente que se conecta
+   	 * @return un String con el nombre del cliente
+   	 * 
+   	 */
 
     private String getName() {
         return "Usuario";
     }
+    /**
+   	 * 
+   	 * comienza el hilo de ejecucion del socket. este metodo tambien verifica que exista un agente de soporte 
+   	 * conectado antes de permitir una conexion al sistema de chat
+   	 * @throws IOException: una excepción si ocurre algun error al ejecutar el socket
+   	 * @exception: cuando no existe ningun agente conectado
+   	 * 
+   	 */
 
     private void run() throws IOException {
         try {
@@ -165,6 +178,14 @@ public class Cliente {
         }
     }
 
+    /**
+   	 * 
+   	 * Metodo main de la clase. Ejecuta la clase
+   	 * @throws Exception: una excepción si ocurre algun error al ejecutar el socket
+   	 * @param args: parametro del sistema operativo
+   	 * 
+   	 */
+    
     public static void main(String[] args) throws Exception {
         ArrayList<Caso> casos = new ArrayList();
         boolean ejecutar = true;

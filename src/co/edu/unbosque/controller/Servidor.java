@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.concurrent.Executors;
@@ -13,8 +14,14 @@ public class Servidor {
     private static Set<String> names = new HashSet<>();
     
 
-    // The set of all the print writers for all the clients, used for broadcast.
+
     private static Set<PrintWriter> writers = new HashSet<>();
+    
+    /**
+   	 * Metodo main de la clase. Ejecuta la clase
+   	 * @throws Exception una excepción si ocurre algun error al ejecutar el serverSocket o el pool de threads
+   	 * @param args: parametro del sistema operativo
+   	 */
 
     public static void main(String[] args) throws Exception {
         System.out.println("El servidor esta funcionando...");
@@ -26,9 +33,8 @@ public class Servidor {
         }
     }
 
-    /**
-     * The client handler task.
-     */
+    
+
     private static class Handler implements Runnable {
         private String name;
         private Socket socket;
@@ -36,21 +42,25 @@ public class Servidor {
         private PrintWriter out;
         private boolean agente = false;
 
+        
         /**
-         * Constructs a handler thread, squirreling away the socket. All the interesting
-         * work is done in the run method. Remember the constructor is called from the
-         * server's main method, so this has to be as short as possible.
-         */
+    	 * 
+    	 * Metodo Constructor de la clase. asigna el socket que va a ser manejado
+    	 * @param socket: el socket que será utilizado
+    	 * 
+    	 */
+
         public Handler(Socket socket) {
             this.socket = socket;
         }
-
+        
         /**
-         * Services this thread's client by repeatedly requesting a screen name until a
-         * unique one has been submitted, then acknowledges the name and registers the
-         * output stream for the client in a global set, then repeatedly gets inputs and
-         * broadcasts them.
-         */
+       	 * 
+       	 * comienza el hilo de ejecucion del socket. 
+       	 * Tambien se encarga de asignar nombres a cada usuario y añadirlos al thread
+       	 * 
+       	 */
+
         public void run() {
             try {
                 in = new Scanner(socket.getInputStream());
@@ -72,7 +82,6 @@ public class Servidor {
                 
               
                 if(names.contains("Soporte") || ip.toString().equals("/127.0.0.2")) {
-                // Keep requesting a name until we get a unique one.
                 while (true) {
                     out.println("SUBMITNAME");
                     name = in.nextLine();
@@ -81,22 +90,29 @@ public class Servidor {
                     }
                     synchronized (names) {
                         if (!name.isBlank() && !names.contains(name)) {
-                            names.add(name);
-                            break;
+                        	
+                        	if(name.equals("Soporte")) {
+                        		 names.add(name);
+                                 break;
+                        	}else {
+                        		Random r = new Random();
+                        		name = "Usuario " + r.nextInt(10);
+                        		 names.add(name);
+                                 break;
+                        	}
+                           
                         }
                     }
                 }
 
-                // Now that a successful name has been chosen, add the socket's print writer
-                // to the set of all writers so this client can receive broadcast messages.
-                // But BEFORE THAT, let everyone else know that the new person has joined!
+
                 out.println("NAMEACCEPTED " + name);
                 for (PrintWriter writer : writers) {
                     writer.println("MESSAGE " + name + " se ha unido");
                 }
                 writers.add(out);
 
-                // Accept messages from this client and broadcast them.
+
                 while (true) {
                     String input = in.nextLine();
                     if (input.toLowerCase().startsWith("/quit")) {
@@ -122,7 +138,7 @@ public class Servidor {
                     System.out.println(name + " se ha ido");
                     names.remove(name);
                     for (PrintWriter writer : writers) {
-                        writer.println("MESSAGE " + name + " has left");
+                        writer.println("MESSAGE " + name + " se fué");
                     }
                 }
                 try {
@@ -133,33 +149,6 @@ public class Servidor {
         }
     }
 
-	/**
-	 * @return the names
-	 */
-	public static Set<String> getNames() {
-		return names;
-	}
-
-	/**
-	 * @param names the names to set
-	 */
-	public static void setNames(Set<String> names) {
-		Servidor.names = names;
-	}
-
-	/**
-	 * @return the writers
-	 */
-	public static Set<PrintWriter> getWriters() {
-		return writers;
-	}
-
-	/**
-	 * @param writers the writers to set
-	 */
-	public static void setWriters(Set<PrintWriter> writers) {
-		Servidor.writers = writers;
-	}
-    
+	
     
 }
