@@ -10,6 +10,10 @@ Pasos para la utilizacion del programa:
 
 4.Ejecutar el/los Cliente/s
 
-5.Usar los Clientes
+5.Si se quiere usar el chat con el Soporte, abrir el soporte
 
-6.Ser feliz
+5.Seleccionar en el cliente la opcion 2
+
+6.Se puede escribir tanto en la pantalla del cliente, como en la pantalla de servidor
+
+7.Ser feliz
