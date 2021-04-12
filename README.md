@@ -12,7 +12,7 @@ Pasos para la utilizacion del programa:
 
 4.Ejecutar el/los Cliente/s. Elegir alguna de las opciones.
 
-5.Si se quiere usar el chat con el Soporte, abrir el soporte. de lo Contrario el usuario se le niega el acesso.
+5.Si se quiere usar el chat con el Soporte, abrir el soporte.De lo Contrario el usuario se le niega el acesso.
 
 5.Seleccionar en el cliente la opcion 2
 
