@@ -80,6 +80,7 @@ public class Cliente {
 
             }catch (Exception e) {
 				System.out.println("No existe ningun agente conectado, intente mas tarde");
+
 			       ArrayList<Caso> casos = new ArrayList();
 			        boolean ejecutar = true;
 			        while (ejecutar == true){
@@ -141,17 +142,7 @@ public class Cliente {
 			                    System.exit(0);
 			                }
 			            } else if (seleccion.equalsIgnoreCase("2")) {
-			            	 
-			            	try {
-			            		var cliente = new Cliente("127.0.0.1");
-			            		 cliente.run();
-					                cliente.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					                cliente.frame.setVisible(true);        
-			            	}catch (Exception e1) {
-			            		ejecutar = true;
-			            		
-							}
-			               
+			                ejecutar = false;
 			            } else if (seleccion.equalsIgnoreCase("3")) {
 			                if (casos.size() != 0) {
 			                    for (int i = 0; i < casos.size(); i++) {
@@ -253,6 +244,9 @@ public class Cliente {
             }
         }
         
-    
+        var cliente = new Cliente("127.0.0.1");
+        cliente.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        cliente.frame.setVisible(true);
+        cliente.run();
     }
 }
